@@ -1,3 +1,6 @@
+from urllib import request
+from flask import request
+
 from django.shortcuts import render, redirect
 
 # Create your views here.
@@ -24,4 +27,22 @@ def modulos(request):
     return render(request, 'core/modulos.html')
 
 def cadastro(request):
-    return render(request, 'core/cadastro.html')
+     
+    gmail_user = None
+    nome_user = None
+
+    if request.method == 'POST':
+        gmail_user = request.POST.get('gmail')
+        nome_user = request.POST.get('nome')
+
+    numero_desenvolvedor = 5581994317883
+    mensagem = f'Olá, meu nome é {nome_user} e gostaria de cadastrar minha empresa na Sellix.'
+    
+    url_whatsapp = f'https://wa.me/{numero_desenvolvedor}?text={mensagem}'
+
+    if nome_user and gmail_user:
+        return redirect(url_whatsapp)
+
+    return render(request, 'core/cadastro.html', {
+        'watsapp': url_whatsapp 
+    })
