@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 def index(request):
+    return render(request, 'core/index.html')
+
+def login(request):
     email_user = None
     senha_user = None
 
@@ -12,7 +15,7 @@ def index(request):
     if senha_user in ['1234', 'pedro']:
         return redirect('page2')
 
-    return render(request, 'core/index.html')
+    return render(request, 'core/login.html')
 
 def page2(request):
     return render(request, 'core/page2.html')
