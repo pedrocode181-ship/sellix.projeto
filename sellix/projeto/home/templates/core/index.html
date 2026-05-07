@@ -29,7 +29,7 @@
 
         p {
             font-size: 18px;
-            color: #cbd5e1;
+            color: #8a8a8ba6;
             max-width: 600px;
         }
 
@@ -47,16 +47,43 @@
         .btn:hover {
             background: rgb(0, 144, 0);
         }
+        .navbar {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 97%;
+            height: 5vh;
+            padding: 20px;
+            background: rgb(42, 42, 42);
+        }
+        .logo {
+            font-family: 'VT323', monospace;
+            color: rgb(0, 195, 0);
+        }
+        a {
+            color: #939394a6;
+            text-decoration: none;
+            margin-left: 20px;
+        }
     </style>
 </head>
 
 <body>
+<div class="navbar">
+    <h2 class="logo">Sellix</h2>
+        <div class="card">
+            <a href="{% url 'modulos' %}" style="color: #939394a6; text-decoration: none;"> Módulos</a>
+            <a href="{% url 'modulos' %}" style="color: #939394a6; text-decoration: none;"> Entrar</a>
+        </div>
 
+</div>
 <div class="hero">
     <h1>Bem-vindo a <span style="color: rgb(0, 195, 0);">Sellix</span></h1>
     <p>Um projeto em desenvolvimento focado em ajudar pequenas empresas que estão comaçando agora com modulos de ajuda, graficos e muito mais.</p>
 
-    <a class="btn" href="login/">Comece agora</a>
+    <a class="btn" href="login/">Comece agora - R$ 49,90</a>
+    <p>Pague mensalmente e tenha acesso a todas as funcionalidades.</p>
 </div>
 
 </body>

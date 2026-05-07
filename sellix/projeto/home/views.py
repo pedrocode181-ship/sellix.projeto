@@ -19,3 +19,9 @@ def login(request):
 
 def page2(request):
     return render(request, 'core/page2.html')
+
+def modulos(request):
+    return render(request, 'core/modulos.html')
+
+def cadastro(request):
+    return render(request, 'core/cadastro.html')

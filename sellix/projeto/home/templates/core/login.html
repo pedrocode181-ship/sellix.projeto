@@ -53,6 +53,10 @@
             height: 4vh;
             width: 85%;
         }
+        a {
+            color: rgb(0, 195, 0);
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -65,6 +69,7 @@
             <input type="email" name="email" placeholder="Digite seu email" required>
             <input type="password" name="senha" placeholder="Digite sua senha" required>
             <button>Entrar</button>
+            <p>ainda não tem uma conta? <a href="{% url 'cadastro' %}">Cadastre-se</a></p>
     </div>    
     </form>
 
