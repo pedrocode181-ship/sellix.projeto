@@ -44,5 +44,5 @@ def cadastro(request):
         return redirect(url_whatsapp)
 
     return render(request, 'core/cadastro.html', {
-        'watsapp': url_whatsapp 
+        'watsapp_url': url_whatsapp
     })

@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Sellix Projeto</title>
+    <title>Sellix | SAAS</title>
 
     <style>
         body {
@@ -66,6 +66,9 @@
             text-decoration: none;
             margin-left: 20px;
         }
+        s {
+            color: #939394a6;
+        }
     </style>
 </head>
 
@@ -74,7 +77,7 @@
     <h2 class="logo">Sellix</h2>
         <div class="card">
             <a href="{% url 'modulos' %}" style="color: #939394a6; text-decoration: none;"> Módulos</a>
-            <a href="{% url 'modulos' %}" style="color: #939394a6; text-decoration: none;"> Entrar</a>
+            <a href="{% url 'login' %}" style="color: #939394a6; text-decoration: none;"> Entrar</a>
         </div>
 
 </div>
@@ -82,8 +85,8 @@
     <h1>Bem-vindo a <span style="color: rgb(0, 195, 0);">Sellix</span></h1>
     <p>Um projeto em desenvolvimento focado em ajudar pequenas empresas que estão comaçando agora com modulos de ajuda, graficos e muito mais.</p>
 
-    <a class="btn" href="login/">Comece agora - R$ 49,90</a>
-    <p>Pague mensalmente e tenha acesso a todas as funcionalidades.</p>
+    <a class="btn" href="{% url 'cadastro' %}">Comece agora - R$ 49,90</a>
+    <p>Pague mensalmente e tenha acesso a todas as funcionalidades.</p><s>R$ 6,90</s>
 </div>
 
 </body>
