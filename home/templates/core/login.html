@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sellix | SAAS</title>
+     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/logo.png' %}">
+    <link rel="shortcut icon" href="{% static 'img/logo.png' %}">
+</head>
+    <style>
+        body {
+            background: black;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }     
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgb(54, 54, 54);
+            color: white;
+            height: 50vh;
+            width: 300px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgb(54, 54, 54);
+        }
+        input {
+            height: 3vh;
+            width: 90%;
+            border-radius: 5px;
+            margin-top: 10px;
+            box-shadow: 0px 4px 10px rgb(39, 39, 39);
+            border: none;
+        }
+        button {
+            height: 4vh;
+            width: 80%;
+            border-radius: 5px;
+            margin-top: 10px;
+            background: rgb(0, 195, 0);
+            border: none;
+            box-shadow: 0px 4px 10px rgb(50, 50, 50);
+            cursor: pointer;
+            color: white;
+        }
+        button:hover {
+            background: rgb(0, 152, 0);
+            box-shadow: 0px 4px 10px rgb(30, 30, 30);
+            height: 4vh;
+            width: 85%;
+        }
+        a {
+            color: rgb(0, 195, 0);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Seja bem-vindo à <span style="color: rgb(0, 195, 0);">Sellix</span></h1> 
+
+    <form method="POST">
+        {% csrf_token %}
+    <div class="container">
+            <h1>Faça o <span style="color: rgb(0, 195, 0);">Login</span></h1>  
+            <input type="email" name="email" placeholder="Digite seu email" required>
+            <input type="password" name="senha" placeholder="Digite sua senha" required>
+            <button>Entrar</button>
+            <p>ainda não tem uma conta? <a href="{% url 'cadastro' %}">Cadastre-se</a></p>
+    </div>    
+    </form>
+
+
+</body>
+</html>
