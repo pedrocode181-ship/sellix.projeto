@@ -28,6 +28,10 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
+# segurança no login
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/dashboard/'
+
 
 # Application definition
 

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import index, modulos, page2, login_view, cadastro, controle, deletar_usuario
+from .views import index, modulos, page2, login_view, cadastro, controle
 
 urlpatterns = [
     path('', index, name='introducao'),
@@ -8,5 +8,4 @@ urlpatterns = [
     path('modulos/', modulos, name='modulos'),
     path('cadastro/', cadastro, name='cadastro'),
     path('controle/', controle, name='controle'),
-    path('controle/deletar/<int:user_id>/', deletar_usuario, name='deletar_usuario'),
 ]
