@@ -3,6 +3,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sellix | SAAS</title>
 
     <link rel="icon" type="image/x-icon" sizes="32x32" href="{% static 'img/favicon.ico' %}">
@@ -11,12 +12,42 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
             font-family: Arial, sans-serif;
             background: #000000;
             color: white;
-            align-items: flex-start;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            position: fixed;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            height: 70px;
+            padding: 20px 40px;
+            background: rgb(19, 19, 19);
+            z-index: 1000;
+            top: 0;
+        }
+
+        .logo {
+            font-family: 'VT323', monospace;
+            color: rgb(0, 195, 0);
+        }
+
+        .nav-links a {
+            color: #939394a6;
+            text-decoration: none;
+            margin-left: 20px;
         }
 
         .hero {
@@ -27,6 +58,10 @@
             align-items: center;
             text-align: center;
             padding: 20px;
+        }
+
+        h1 {
+            font-size: 60px;
         }
 
         h2 {
@@ -55,247 +90,166 @@
         .btn:hover {
             background: rgb(0, 144, 0);
         }
-        .container{
-            max-width:1200px;
-            margin:auto;
-            padding:80px 24px;
-    }
 
-        .top-text{
-            text-align:center;
-            color:#00ff99;
-            font-family:'VT323', monospace;
-            font-size:24px;
-            letter-spacing:4px;
-            margin-bottom:16px;
-    }
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(420px,1fr));
-      gap:22px;
-    }
-
-    .card{
-      background:#0b0b0b;
-      border:1px solid #1d1d1d;
-      border-radius:22px;
-      padding:32px;
-      display:flex;
-      gap:22px;
-      height: 2vh;
-      transition:0.25s ease;
-    }
-
-    .card:hover{
-      transform:translateY(-4px);
-      border-color:#2f2f2f;
-      box-shadow:0 0 30px rgba(0,255,153,0.08);
-    }
-
-    .icon-box{
-      min-width:60px;
-      height:60px;
-      border-radius:14px;
-      background:#151515;
-      border:1px solid #222;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-
-    .icon-box i{
-      color:#9b9b9b;
-      width:28px;
-      height:28px;
-    }
-
-    .card h2{
-      font-size:32px;
-      margin-bottom:10px;
-      font-weight:700;
-    }
-
-    .card p{
-      color:#8b8b8b;
-      font-size:20px;
-      line-height:1.6;
-    }
-
-    @media(max-width:768px){
-
-      h1{
-        font-size:46px;
-      }
-
-      .grid{
-        grid-template-columns:1fr;
-      }
-
-      .card{
-        padding:24px;
-        height: 7vh;
-      }
-
-      .card h2{
-        font-size:24px;
-      }
-
-      .card p{
-        font-size:16px;
-      }
-    }
-        .navbar {
-            position: fixed;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            width: 97%;
-            height: 5vh;
-            padding: 20px;
-            background: rgb(19, 19, 19);
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 80px 24px;
         }
-        .logo {
+
+        .top-text {
+            text-align: center;
+            color: #00ff99;
             font-family: 'VT323', monospace;
-            color: rgb(0, 195, 0);
+            font-size: 24px;
+            letter-spacing: 4px;
+            margin-bottom: 16px;
         }
-        a {
-            color: #939394a6;
-            text-decoration: none;
-            margin-left: 20px;
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 22px;
         }
-        s {
-            color: #939394a6;
+
+        .card {
+            background: #0b0b0b;
+            border: 1px solid #1d1d1d;
+            border-radius: 22px;
+            padding: 32px;
+            display: flex;
+            gap: 22px;
+            transition: 0.25s ease;
+            min-height: 220px;
         }
-        img {
-            height: 10vh;
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: #2f2f2f;
+            box-shadow: 0 0 30px rgba(0,255,153,0.08);
         }
-        .container1 {
+
+        .icon-box {
+            min-width: 60px;
+            height: 60px;
+            border-radius: 14px;
+            background: #151515;
+            border: 1px solid #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card h2 {
+            font-size: 26px;
+        }
+
+        .container1, .container4 {
             height: 100vh;
             background: rgb(17, 17, 17);
-            color: rgb(19, 19, 19);
             display: flex;
-            flex-direction: column;margin: 0;
-            font-family: Arial, sans-serif;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-        }
-        .container4 {
-            height: 100vh;
-            background: rgb(17, 17, 17);
-            color: rgb(19, 19, 19);
-            display: flex;
-            flex-direction: column;margin: 0;
-            font-family: Arial, sans-serif;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+            padding: 20px;
         }
     </style>
 </head>
 
 <body>
+
 <div class="navbar">
     <h2 class="logo">Sellix</h2>
-        <div class="card">
-            <a href="{% url 'modulos' %}" style="color: #939394a6; text-decoration: none;"> Módulos</a>
-            <a href="{% url 'login' %}" style="color: #939394a6; text-decoration: none;"> Entrar</a>
-            <a href="{% url 'politica' %}" style="color: #939394a6; text-decoration: none;"> Politica de Privacidade</a>
-        </div>
 
+    <div class="nav-links">
+        <a href="{% url 'modulos' %}">Módulos</a>
+        <a href="{% url 'login' %}">Entrar</a>
+        <a href="{% url 'politica' %}">Politica de Privacidade</a>
+    </div>
 </div>
+
 <div class="hero">
     <h1>Bem-vindo a <span style="color: rgb(0, 195, 0);">Sellix</span></h1>
+
     <p>Um projeto em desenvolvimento focado em ajudar pequenas empresas que estão começando agora com modulos de ajuda, graficos, whatsapp de suporte e muito mais.</p>
 
     <a class="btn" href="{% url 'cadastro' %}">Comece agora - R$ 49,90</a>
-    <p>Pague mensalmente e tenha acesso a todas as funcionalidades.</p><s>R$ 69,90</s>
+
+    <p>Pague mensalmente e tenha acesso a todas as funcionalidades.</p>
+
+    <s>R$ 69,90</s>
 </div>
+
 <div class="container1">
     <span style="color: rgb(0, 195, 0);">O que é a Sellix?</span>
-    <h2>A plataforma em desenvolvimento que eu criei</h2>
-    <p>Olá meu nome é Pedro e tenho 13 anos e estudo programação já há algum tempo, e eu construi essa plataforma como uma forma para ajudar pequenas empresas a evoluirem com uma melhor gestão de sua empresa, porque eu não via com frequencia plataformas reais que ajudam realmente uma empresa a evoluir.</p>
-    <p>E com base nessas ideias eu criei a Sellix uma plataforma que visa simplificar o processo de gestão para pequenas empresas com um valor super acessível.</p>
 
+    <h2>A plataforma em desenvolvimento que eu criei</h2>
+
+    <p>Olá meu nome é Pedro e tenho 13 anos e estudo programação já há algum tempo, e eu construi essa plataforma como uma forma para ajudar pequenas empresas a evoluirem com uma melhor gestão de sua empresa, porque eu não via com frequencia plataformas reais que ajudam realmente uma empresa a evoluir.</p>
+
+    <p>E com base nessas ideias eu criei a Sellix uma plataforma que visa simplificar o processo de gestão para pequenas empresas com um valor super acessível.</p>
 </div>
+
 <section class="container">
 
     <div class="top-text">
-      OS MÓDULOS QUE VOCÊ TERÁ ACESSO
+        OS MÓDULOS QUE VOCÊ TERÁ ACESSO
     </div>
 
     <h1>Tudo em um só lugar.</h1>
 
     <div class="grid">
 
-      <div class="card">
-        <div class="icon-box">
-          <i data-lucide="wallet"></i>
+        <div class="card">
+            <div class="icon-box"><i data-lucide="wallet"></i></div>
+            <div>
+                <h2>Finanças</h2>
+                <p>Um lugar onde você pode gerenciar suas finanças pessoais de forma simples e eficiente, e acompanhar o desenvolvimento de moedas pelo resto do mundo.</p>
+            </div>
         </div>
 
-        <div>
-          <h2>Finanças</h2>
-          <p>
-            Um lugar onde você pode gerenciar suas finanças pessoais de forma simples e eficiente, e acompanhar o desenvolvimento de moedas pelo resto do mundo.
-          </p>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="icon-box">
-          <i data-lucide="newspaper"></i>
+        <div class="card">
+            <div class="icon-box"><i data-lucide="newspaper"></i></div>
+            <div>
+                <h2>Dashboard</h2>
+                <p>O módulo de dashboard oferece uma visão geral completa de suas finanças, permitindo um acompanhamento eficiente e decisivo de suas vendas.</p>
+            </div>
         </div>
 
-        <div>
-          <h2>Dashboard</h2>
-          <p>
-            O módulo de dashboard oferece uma visão geral completa de suas finanças, permitindo um acompanhamento eficiente e decisivo de suas vendas.
-          </p>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="icon-box">
-          <i data-lucide="users"></i>
+        <div class="card">
+            <div class="icon-box"><i data-lucide="users"></i></div>
+            <div>
+                <h2>Clientes</h2>
+                <p>Gerencie seus clientes e relacionamentos de forma eficiente, mantendo um registro detalhado de todas as interações e transações.</p>
+            </div>
         </div>
 
-        <div>
-          <h2>Clientes</h2>
-          <p>
-            Gerencie seus clientes e relacionamentos de forma eficiente, mantendo um registro detalhado de todas as interações e transações.
-          </p>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="icon-box">
-          <i data-lucide="briefcase"></i>
+        <div class="card">
+            <div class="icon-box"><i data-lucide="briefcase"></i></div>
+            <div>
+                <h2>Vendas</h2>
+                <p>Acompanhe e gerencie suas vendas de forma eficiente, com graficos detalhados de suas vendas por cidade e insights valiosos para otimizar seu desempenho.</p>
+            </div>
         </div>
 
-        <div>
-          <h2>Vendas</h2>
-          <p>
-            Acompanhe e gerencie suas vendas de forma eficiente, com graficos detalhados de suas vendas por cidade e insights valiosos para otimizar seu desempenho.
-          </p>
-        </div>
-      </div>
-
-      <div class="top-text">
-      + MÓDULOS QUE ESTÃO POR VIR
     </div>
 
+    <div class="top-text" style="margin-top:50px;">
+        + MÓDULOS QUE ESTÃO POR VIR
     </div>
-  </section>
 
-  <script>
-    lucide.createIcons();
-  </script>
+</section>
 
 <div class="container4">
     <h2>Garantia de 7 dias gratis</h2>
-    <a>Teste, explore e avalie. Se não estiver satisfeito, entre em contato com nosso whatsapp de suporte e devolvolvemos 100% de seu dinheiro dentro de 7 dias.</a>
+
+    <p>Teste, explore e avalie. Se não estiver satisfeito, entre em contato com nosso whatsapp de suporte e devolveremos 100% de seu dinheiro dentro de 7 dias.</p>
 </div>
+
+<script>
+    lucide.createIcons();
+</script>
 
 </body>
 </html>
