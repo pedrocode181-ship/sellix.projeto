@@ -6,7 +6,6 @@ from django.utils import timezone
 class Company(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
-    theme_color = models.CharField(max_length=20, default="#4f46e5")
 
     active = models.BooleanField(default=True)
     paid = models.BooleanField(default=False)
@@ -26,7 +25,7 @@ class Membership(models.Model):
 
 class TableItem(models.Model):  
     created_at = models.DateTimeField(auto_now_add=True)
-    
+
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     text = models.CharField(max_length=255)
 
