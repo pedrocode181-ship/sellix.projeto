@@ -4,8 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Sellix | SAAS</title>
-    <link rel="icon" type="image/x-icon" sizes="32x32" href="{% static 'favicon.ico' %}">
-    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+
+    <link rel="icon" type="image/x-icon" sizes="32x32" href="{% static 'img/favicon.ico' %}">
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
@@ -14,6 +16,7 @@
             font-family: Arial, sans-serif;
             background: #000000;
             color: white;
+            align-items: flex-start;
         }
 
         .hero {
@@ -79,6 +82,7 @@
       padding:32px;
       display:flex;
       gap:22px;
+      height: 2vh;
       transition:0.25s ease;
     }
 
@@ -129,6 +133,7 @@
 
       .card{
         padding:24px;
+        height: 7vh;
       }
 
       .card h2{
@@ -140,6 +145,7 @@
       }
     }
         .navbar {
+            position: fixed;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
@@ -195,6 +201,7 @@
         <div class="card">
             <a href="{% url 'modulos' %}" style="color: #939394a6; text-decoration: none;"> Módulos</a>
             <a href="{% url 'login' %}" style="color: #939394a6; text-decoration: none;"> Entrar</a>
+            <a href="{% url 'politica' %}" style="color: #939394a6; text-decoration: none;"> Politica de Privacidade</a>
         </div>
 
 </div>

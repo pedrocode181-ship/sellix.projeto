@@ -127,7 +127,7 @@
     <h1>Entre agora</h1>
 
     <p class="subtitle">
-      Cadastre seu nome e e-mail para acessar
+      Cadastre seu e-mail ou nome de usuário e senha para criar conta e acessar
       a plataforma.
     </p>
 
@@ -138,19 +138,27 @@
         <label>Nome</label>
         <input 
           type="text" 
-          name="nome"
-          placeholder="Digite seu nome"
+          name="username"
+          placeholder="Digite seu nome ou da empresa"
           required
         />
       </div>
 
       <div class="input-group">
-        <label>E-mail</label>
+        <label>Senha</label>
         <input 
-          type="email" 
-          name="gmail"
-          placeholder="Digite seu e-mail"
+          type="password" 
+          name="password"
+          placeholder="Digite sua senha"
           required
+        />
+      </div>
+      <div class="input-group">
+        <label>Descrição da empresa (opcional)</label>
+        <input 
+          type="text" 
+          name="description"
+          placeholder="Digite a descrição da empresa"
         />
       </div>
 
@@ -161,7 +169,8 @@
     </form>
 
     <div class="footer">
-      Seus dados estão protegidos.
+      Sem o pagamento sua conta será desativada.
+      Entre em contato com o suporte para mais informações.
     </div>
 
   </div>

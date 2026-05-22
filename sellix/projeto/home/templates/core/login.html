@@ -1,13 +1,13 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sellix | SAAS</title>
-     <link rel="icon" type="image/x-icon" sizes="32x32" href="{% static 'img/logo.png' %}">
-    <link rel="shortcut icon" href="{% static 'img/logo.png' %}">
-</head>
+    <link rel="icon" type="image/x-icon" sizes="32x32" href="{% static 'favicon.ico' %}">
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
         body {
             background: black;
@@ -71,6 +71,14 @@
             color: rgb(0, 195, 0);
             text-decoration: none;
         }
+        .container2 {
+            background: rgb(54, 54, 54);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            border: rgba(255, 0, 0, 0.716);
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body>
@@ -80,8 +88,13 @@
         {% csrf_token %}
     <div class="container">
             <h1>Faça o <span style="color: rgb(0, 195, 0);">Login</span></h1>
-            <input type="email" name="gmail" placeholder="Digite seu email" required>
-            <input type="password" name="senha" placeholder="Digite sua senha" required>
+            <input type="text" name="username" placeholder="Digite seu e-mail ou usuário" required>
+            <input type="password" name="password" placeholder="Digite sua senha" required>
+            {% if error %}
+            <div class="container2">
+                <p style="color:red;">{{ error }}</p>
+            </div>
+            {% endif %}
             <button>Entrar</button>
             <p>ainda não tem uma conta? <a href="{% url 'cadastro' %}">Cadastre-se</a></p>
     </div>    
