@@ -23,7 +23,7 @@
 
         .title {
             font-size: 22px;
-            color: #00ff99;
+            color: rgb(0, 195, 0);
         }
 
         .container {
@@ -63,6 +63,9 @@
             margin-bottom: 20px;
             color: #888;
         }
+        h2 {
+            color: rgb(0, 195, 0);
+        }
     </style>
 </head>
 
@@ -78,7 +81,8 @@
 <div class="container">
 
     <div class="top-bar">
-        Controle total de usuários cadastrados no sistema
+        Seja bem vindo, <span style="color: rgb(0, 195, 0);">{{ user.username }}</span>  
+        | Controle total de usuários cadastrados no sistema
     </div>
 
     {% for u in usuarios %}

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ company.name }} Dashboard</title>
+    <title>{{ company.name }} | Dashboard</title>
     <link rel="icon" type="image/x-icon" sizes="32x32" href="{% static 'favicon.ico' %}">          
     <link rel="shortcut icon" href="{% static 'img/logo.png' %}">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -27,24 +27,25 @@
         }
 
         .card {
-            background: white;
+            background: gray;
             padding: 15px;
             margin: 10px 0;
             border-radius: 10px;
         }
 
         input, textarea {
-            width: 100%;
+            width: 98%;
             padding: 8px;
             margin: 5px 0;
         }
 
         button {
-            background: blue;
+            background: rgb(0, 195, 0);
             color: white;
             border: none;
             padding: 10px;
             cursor: pointer;
+            border-radius: 5px;
         }
 
         .post {
@@ -60,63 +61,51 @@
 
 <div class="header">
     <h1>{{ company.name }}</h1>
-    <p>{{ description }}</p>
     <p>Desenvolvedor: 81 994317883</p>
 </div>
 
 <div class="container">
 
-    <!-- 🛠 EDITAR EMPRESA -->
+    <!-- 🛠 EMPRESA -->
     <div class="card">
-        <h2>Personalizar empresa</h2>
+        <h2>Sua empresa</h2>
 
         <form method="POST">
             {% csrf_token %}
 
+            <label>Nome da empresa:</label>
             <input type="text" name="name" value="{{ company.name }}">
 
-            <label>Cor do tema:</label>
-            <input type="color" name="theme_color" value="{{ company.theme_color }}">
-
-            <button type="submit">Salvar alterações</button>
         </form>
     </div>
 
-    <!-- 🧾 POSTS -->
-    <div class="card">
-        <h2>Posts da empresa</h2>
+    <!-- 🧾 TABELA DINÂMICA -->
+<div class="card">
 
-        {% for post in posts %}
-            <div class="post">
-                <b>{{ post.user.username }}</b>
-                <p>{{ post.content }}</p>
-            </div>
-        {% empty %}
-            <p>Nenhum post ainda</p>
-        {% endfor %}
-    </div>
+    <h1>Tabela de produtos</h1>
+    <form method="POST" action="{% url 'add_item' %}">
+        {% csrf_token %}
 
-    <!-- 🧾 TABELA DINÂMICA (CORRETA) -->
-<form method="POST" action="{% url 'add_item' %}">
-    {% csrf_token %}
-
-    <input type="text" name="text" placeholder="Adicionar item">
+        <label>Adicionar novo item:</label>
+        <input type="text" name="text" placeholder="Adicionar item">
 
     <button type="submit">Adicionar</button>
-</form>
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Texto</th>
-    </tr>
+    </form>
+    <br>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Texto</th>
+        </tr>
 
-    {% for item in items %}
-    <tr>
-        <td>{{ item.id }}</td>
-        <td>{{ item.text }}</td>
-    </tr>
-    {% endfor %}
-</table>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.text }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 
 </body>
 </html>
