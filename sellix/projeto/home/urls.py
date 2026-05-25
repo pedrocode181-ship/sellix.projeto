@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import bloqueio, index, modulos, login_view, cadastro, controle, deletar_usuario, dashboard, politica, add_item
+from .views import add_funcionario, bloqueio, index, modulos, login_view, cadastro, controle, deletar_usuario, dashboard, politica, add_item
 
 
 urlpatterns = [
@@ -10,7 +10,9 @@ urlpatterns = [
     path('controle/', controle, name='controle'),
     path('bloqueio/', bloqueio, name='bloqueio'),
     path('dashboard/', dashboard, name='dashboard'),
-    path('add-item/', add_item, name='add_item'),
+    path('add_funcionario/', add_funcionario, name='add_funcionario'),
+    path('add_item/', add_item, name='add_item'),
     path('politica/', politica, name='politica'),
     path('controle/deletar/<int:user_id>/', deletar_usuario, name='deletar_usuario'),
+
 ]

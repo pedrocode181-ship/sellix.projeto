@@ -3,20 +3,24 @@ from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
-from .models import Company, Membership, TableItem
+from .models import Company, Funcionario, Membership, TableItem
 
 
 # -----------------------
 # PÁGINAS PÚBLICAS
 # -----------------------
+
 def index(request):
     return render(request, 'core/index.html')
+
 
 def modulos(request):
     return render(request, 'core/modulos.html')
 
+
 def bloqueio(request):
     return render(request, 'core/bloqueio.html')
+
 
 def politica(request):
     return render(request, 'core/politica.html')
@@ -25,15 +29,24 @@ def politica(request):
 # -----------------------
 # LOGIN
 # -----------------------
+
 def login_view(request):
+
     if request.method == 'POST':
+
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(
+            request,
+            username=username,
+            password=password
+        )
 
         if not user:
-            return render(request, 'core/login.html', {'error': 'Login inválido'})
+            return render(request, 'core/login.html', {
+                'error': 'Login inválido'
+            })
 
         auth_login(request, user)
 
@@ -46,10 +59,13 @@ def login_view(request):
 
 
 # -----------------------
-# CADASTRO (CRIA USER + EMPRESA)
+# CADASTRO
 # -----------------------
+
 def cadastro(request):
+
     if request.method == 'POST':
+
         username = request.POST.get('username')
         password = request.POST.get('password')
         description = request.POST.get('descriçao')
@@ -59,7 +75,10 @@ def cadastro(request):
                 'error': 'Usuário já existe'
             })
 
-        user = User.objects.create_user(username=username, password=password)
+        user = User.objects.create_user(
+            username=username,
+            password=password
+        )
 
         company = Company.objects.create(
             name=username,
@@ -80,33 +99,37 @@ def cadastro(request):
 
 
 # -----------------------
-# DASHBOARD (EMPRESA DO USUÁRIO)
+# DASHBOARD
 # -----------------------
+
 @login_required
 def dashboard(request):
+    labels = ["Produto A", "Produto B", "Produto C"]
+    data = [10, 25, 15]
     membership = Membership.objects.filter(user=request.user).first()
 
     if not membership:
         return redirect('bloqueio')
 
     company = membership.company
-    items = TableItem.objects.filter(company=company)
 
     return render(request, 'core/dashboard.html', {
         'company': company,
-        'items': items,
-        'description': company.description
+        'items': TableItem.objects.filter(company=company),
+        'funcionarios': Funcionario.objects.filter(company=company),
+        'labels': labels,
+        'data': data
     })
 
-
 # -----------------------
-# ADICIONAR ITEM NA TABELA
+# PRODUTOS
 # -----------------------
 @login_required
 def add_item(request):
-    if request.method == "POST":
-        membership = Membership.objects.filter(user=request.user).first()
 
+    if request.method == "POST":
+
+        membership = Membership.objects.filter(user=request.user).first()
         if not membership:
             return redirect('dashboard')
 
@@ -114,17 +137,41 @@ def add_item(request):
 
         TableItem.objects.create(
             company=company,
-            text=request.POST.get("text")
+            nome=request.POST.get("produto"),
+            preco=request.POST.get("preco"),
+        )
+
+    return redirect('dashboard')
+# -----------------------
+# FUNCIONÁRIOS
+# -----------------------
+
+@login_required
+def add_funcionario(request):
+
+    if request.method == "POST":
+
+        membership = Membership.objects.filter(user=request.user).first()
+        if not membership:
+            return redirect('dashboard')
+
+        company = membership.company
+
+        Funcionario.objects.create(
+            company=company,
+            nome=request.POST.get("nome"),
+            cargo=request.POST.get("cargo")
         )
 
     return redirect('dashboard')
 
+# -----------------------
+# CONTROLE (ADMIN)
+# -----------------------
 
-# -----------------------
-# ADMIN
-# -----------------------
 @login_required
 def controle(request):
+
     if not request.user.is_superuser:
         return redirect('dashboard')
 
@@ -135,6 +182,7 @@ def controle(request):
 
 @login_required
 def deletar_usuario(request, user_id):
+
     if not request.user.is_superuser:
         return redirect('dashboard')
 
