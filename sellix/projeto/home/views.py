@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
-from .models import Company, Funcionario, Membership, TableItem
+from .models import Company, Funcionario, Membership, TableItem, Venda
 
 
 # -----------------------
@@ -45,7 +45,7 @@ def login_view(request):
 
         if not user:
             return render(request, 'core/login.html', {
-                'error': 'Login inválido'
+                'error': 'Login inválido, tente novamente'
             })
 
         auth_login(request, user)
@@ -101,11 +101,9 @@ def cadastro(request):
 # -----------------------
 # DASHBOARD
 # -----------------------
-
 @login_required
 def dashboard(request):
-    labels = ["Produto A", "Produto B", "Produto C"]
-    data = [10, 25, 15]
+
     membership = Membership.objects.filter(user=request.user).first()
 
     if not membership:
@@ -113,35 +111,50 @@ def dashboard(request):
 
     company = membership.company
 
-    return render(request, 'core/dashboard.html', {
-        'company': company,
-        'items': TableItem.objects.filter(company=company),
-        'funcionarios': Funcionario.objects.filter(company=company),
-        'labels': labels,
-        'data': data
+    # ATUALIZA NOME DA EMPRESA (opcional)
+    if request.method == "POST":
+        new_name = request.POST.get("name")
+        if new_name:
+            company.name = new_name
+            company.save()
+
+    return render(request, "core/dashboard.html", {
+        "company": company,
+        "items": TableItem.objects.filter(company=company),
+        "funcionarios": Funcionario.objects.filter(company=company),
+        "vendas": Venda.objects.filter(company=company),
     })
 
 # -----------------------
 # PRODUTOS
 # -----------------------
+
 @login_required
 def add_item(request):
 
     if request.method == "POST":
 
         membership = Membership.objects.filter(user=request.user).first()
+
         if not membership:
             return redirect('dashboard')
 
         company = membership.company
 
-        TableItem.objects.create(
-            company=company,
-            nome=request.POST.get("produto"),
-            preco=request.POST.get("preco"),
-        )
+        produto = request.POST.get("produto")
+        preco = request.POST.get("preco")
+
+        if produto and preco:
+
+            TableItem.objects.create(
+                company=company,
+                nome=produto,
+                preco=preco,
+            )
 
     return redirect('dashboard')
+
+
 # -----------------------
 # FUNCIONÁRIOS
 # -----------------------
@@ -157,13 +170,46 @@ def add_funcionario(request):
 
         company = membership.company
 
-        Funcionario.objects.create(
-            company=company,
-            nome=request.POST.get("nome"),
-            cargo=request.POST.get("cargo")
-        )
+        nome = request.POST.get("nome")
+        cargo = request.POST.get("cargo")
+
+        if nome and cargo:  # 👈 EVITA ERRO
+            Funcionario.objects.create(
+                company=company,
+                nome=nome,
+                cargo=cargo
+            )
 
     return redirect('dashboard')
+
+# -----------------------
+# VENDAS
+# -----------------------
+
+@login_required
+def add_venda(request):
+
+    if request.method == "POST":
+
+        membership = Membership.objects.filter(user=request.user).first()
+
+        if not membership:
+            return redirect('dashboard')
+
+        company = membership.company
+
+        valor = request.POST.get("valor")
+        mes = request.POST.get("mes")
+
+        if valor and mes:
+            Venda.objects.create(
+                company=company,
+                valor=float(valor),
+                data=mes
+            )
+
+    return redirect("dashboard")
+
 
 # -----------------------
 # CONTROLE (ADMIN)

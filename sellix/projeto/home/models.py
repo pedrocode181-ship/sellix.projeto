@@ -24,10 +24,7 @@ class Membership(models.Model):
 
 class TableItem(models.Model):
 
-    company = models.ForeignKey(
-        Company,
-        on_delete=models.CASCADE
-    )
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
     nome = models.CharField(max_length=255)
     preco = models.CharField(max_length=100)
@@ -41,10 +38,14 @@ class Funcionario(models.Model):
     nome = models.CharField(max_length=200)
     cargo = models.CharField(max_length=200)
 
-    company = models.ForeignKey(
-        Company,
-        on_delete=models.CASCADE
-    )
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nome
+    
+
+class Venda(models.Model):
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+
+    valor = models.DecimalField(max_digits=10, decimal_places=2)
+    data = models.DateField(max_length=200)
