@@ -1,0 +1,262 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sellix | SAAS</title>
+
+    <link rel="icon" type="image/x-icon" sizes="32x32" href="{% static 'img/favicon.ico' %}">
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #000000;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            position: fixed;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            height: 70px;
+            padding: 20px 40px;
+            background: rgb(19, 19, 19);
+            z-index: 1000;
+            top: 0;
+        }
+
+        .logo {
+            font-family: 'VT323', monospace;
+            color: rgb(0, 195, 0);
+        }
+
+        .nav-links a {
+            color: #939394a6;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 60px;
+        }
+
+        h2 {
+            font-size: 50px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        p {
+            font-size: 18px;
+            color: #8a8a8ba6;
+            max-width: 600px;
+        }
+
+        s {
+            color: #8a8a8ba6;
+        }
+
+        .btn {
+            margin-top: 20px;
+            padding: 12px 24px;
+            background: rgb(0, 195, 0);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: rgb(0, 144, 0);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 80px 24px;
+        }
+
+        .top-text {
+            text-align: center;
+            color: #00ff99;
+            font-family: 'VT323', monospace;
+            font-size: 24px;
+            letter-spacing: 4px;
+            margin-bottom: 16px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 22px;
+        }
+
+        .card {
+            background: #0b0b0b;
+            border: 1px solid #1d1d1d;
+            border-radius: 22px;
+            padding: 32px;
+            display: flex;
+            gap: 22px;
+            transition: 0.25s ease;
+            min-height: 220px;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: #2f2f2f;
+            box-shadow: 0 0 30px rgba(0,255,153,0.08);
+        }
+
+        .icon-box {
+            min-width: 60px;
+            height: 60px;
+            border-radius: 14px;
+            background: #151515;
+            border: 1px solid #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card h2 {
+            font-size: 26px;
+        }
+
+        .container1, .container4 {
+            height: 100vh;
+            background: rgb(17, 17, 17);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <h2 class="logo">Sellix</h2>
+
+    <div class="nav-links">
+        <a href="{% url 'modulos' %}">Módulos</a>
+        <a href="{% url 'login' %}">Entrar</a>
+        <a href="{% url 'politica' %}">Politica de Privacidade</a>
+    </div>
+</div>
+
+<div class="hero">
+    <h1>Bem-vindo a <span style="color: rgb(0, 195, 0);">Sellix</span></h1>
+
+    <p>Um projeto em desenvolvimento focado em ajudar pequenas empresas que estão começando agora com modulos de ajuda, graficos, whatsapp de suporte e muito mais.</p>
+    <a class="btn" href="{% url 'cadastro' %}">Comece agora - R$ 69,90</a>
+    <br>
+    
+    <p>Pague mensalmente e tenha acesso a todas as funcionalidades.</p>
+
+    <s>R$ 129,90</s>
+</div>
+
+<div class="container1">
+    <span style="color: rgb(0, 195, 0);">O que é a Sellix?</span>
+
+    <h2>Gestão simples e moderna para pequenas empresas</h2>
+
+    <p> A Sellix é uma plataforma criada para ajudar pequenas empresas a organizarem
+        suas vendas, clientes e finanças em um só lugar, de forma simples e acessível.</p>
+
+    <p>Nosso objetivo é reduzir a complexidade da gestão empresarial e permitir que
+        empreendedores foquem no que realmente importa: fazer o negócio crescer.</p>
+</div>
+
+<section class="container">
+
+    <div class="top-text">
+        OS MÓDULOS QUE VOCÊ TERÁ ACESSO
+    </div>
+
+    <h1>Tudo em um só lugar.</h1>
+
+    <div class="grid">
+
+        <div class="card">
+            <div class="icon-box"><i data-lucide="wallet"></i></div>
+            <div>
+                <h2>Finanças</h2>
+                <p>Um lugar onde você pode gerenciar suas finanças pessoais de forma simples e eficiente, e acompanhar o desenvolvimento de moedas pelo resto do mundo.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="icon-box"><i data-lucide="newspaper"></i></div>
+            <div>
+                <h2>Dashboard</h2>
+                <p>O módulo de dashboard oferece uma visão geral completa de suas finanças, permitindo um acompanhamento eficiente e decisivo de suas vendas.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="icon-box"><i data-lucide="users"></i></div>
+            <div>
+                <h2>Clientes</h2>
+                <p>Gerencie seus clientes e relacionamentos de forma eficiente, mantendo um registro detalhado de todas as interações e transações.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="icon-box"><i data-lucide="briefcase"></i></div>
+            <div>
+                <h2>Vendas</h2>
+                <p>Acompanhe e gerencie suas vendas de forma eficiente, com graficos detalhados de suas vendas por cidade e insights valiosos para otimizar seu desempenho.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="top-text" style="margin-top:50px;">
+        + MÓDULOS QUE ESTÃO POR VIR
+    </div>
+
+</section>
+
+<div class="container4">
+    <h2>Garantia de 7 dias gratis</h2>
+
+    <p>Teste, explore e avalie. Se não estiver satisfeito, entre em contato com nosso whatsapp de suporte e devolveremos 100% de seu dinheiro dentro de 7 dias.</p>
+    <p>Após o login sua empresa ficará disponível para uso de teste por 7 dias. Após o cadastro procure nosso whatsapp de suporte.</p>
+</div>
+
+<script>
+    lucide.createIcons();
+</script>
+
+</body>
+</html>

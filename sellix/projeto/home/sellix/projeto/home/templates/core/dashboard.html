@@ -1,0 +1,230 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ company.name }} | Dashboard</title>
+    <link rel="icon" type="image/x-icon" sizes="32x32" href="{% static 'favicon.ico' %}">
+    <link rel="shortcut icon" href="{% static 'img/logo.png' %}">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body {
+            font-family: Arial;
+            margin: 0;
+            background: black;
+        }
+
+        .header {
+            background: rgb(0, 195, 0);
+            color: rgb(54, 54, 54);
+            padding: 20px;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .card {
+            background: rgb(28, 28, 28);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+        }
+
+        input {
+            width: 98%;
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: none;
+            background: #111;
+            color: white;
+        }
+
+        button {
+            background: rgb(0, 195, 0);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .post {
+            background: white;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+
+        h2 {
+            color: rgb(0, 195, 0);
+        }
+
+        p {
+            color: white;
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>{{ company.name }}</h1>
+        <p>Desenvolvedor: 81 994317883</p>
+    </div>
+
+    <div class="container">
+
+        <!-- EMPRESA (opcional futuro update) -->
+        <div class="card">
+            <h2>Sua empresa</h2>
+            <form method="POST">
+                {% csrf_token %}
+                <input type="text" name="name" value="{{ company.name }}">
+                <button type="submit">Atualizar</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>Cotações em tempo real</h2>
+
+            <p><strong>Dólar:</strong> R$ {{ usd_price }}</p>
+            <p><strong>Euro:</strong> R$ {{ eur_price }}</p>
+        </div>
+
+        <!-- PRODUTOS -->
+        <div class="card">
+            <h2>Tabela de produtos</h2>
+
+            <form method="POST" action="{% url 'add_item' %}">
+                {% csrf_token %}
+
+                <input type="text" name="produto" placeholder="Nome do produto">
+                <input type="text" name="preco" placeholder="Preço">
+
+                <button type="submit">Adicionar</button>
+            </form>
+
+            <table>
+                <tr>
+                    <th><span style="color: rgb(0, 140, 255); font-weight: bold;">ID |</span></th>
+                    <th><span style="color: rgb(13, 255, 0); font-weight: bold;"> Produto |</span></th>
+                    <th><span style="color: rgb(234, 255, 0); font-weight: bold;"> Preço</span></th>
+                </tr>
+
+                {% for item in items %}
+                <tr>
+                    <td><span style="color: rgb(0, 140, 255); font-weight: bold;">{{ item.id }} |</span></td>
+                    <td><span style="color: rgb(13, 255, 0); font-weight: bold;">{{ item.nome }} |</span></td>
+                    <td><span style="color: rgb(234, 255, 0); font-weight: bold;">{{ item.preco}}</span></td>
+
+                    <td>
+                        <form method="POST" action="{% url 'deletar_item' item.id %}">
+                            {% csrf_token %}
+                            <button style="background:red; cursor: pointer; border-radius: 5px; color:white;" type="submit">
+                                Deletar
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <!-- FUNCIONÁRIOS -->
+        <div class="card">
+            <h2>Tabela de funcionários</h2>
+
+            <form method="POST" action="{% url 'add_funcionario' %}">
+                {% csrf_token %}
+
+                <input type="text" name="nome" placeholder="Nome funcionário">
+                <input type="text" name="cargo" placeholder="Cargo">
+
+                <button type="submit">Adicionar</button>
+            </form>
+
+            <table>
+                <tr>
+                    <th><span style="color: rgb(0, 140, 255); font-weight: bold;">ID |</span></th>
+                    <th><span style="color: rgb(13, 255, 0); font-weight: bold;">Nome |</span></th>
+                    <th><span style="color: rgb(234, 255, 0); font-weight: bold;">Cargo</span></th>
+                </tr>
+
+                {% for f in funcionarios %}
+                <tr>
+                    <td><span style="color: rgb(0, 140, 255); font-weight: bold;">{{ f.id }} |</span></td>
+                    <td> <span style="color: rgb(13, 255, 0); font-weight: bold;">{{ f.nome }} |</span></td>
+                    <td> <span style="color: rgb(234, 255, 0); font-weight: bold;">{{ f.cargo }}</span></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <!-- Tabela de Vendas por Mês -->
+        <div class="card">
+            <h2>Tabela de Valores do Mês</h2>
+
+            <form method="POST" action="{% url 'add_venda' %}">
+                {% csrf_token %}
+
+                <input type="text" name="valor" placeholder="Digite o valor do Mês: ">
+                <input type="text" name="mes" placeholder="Digite o nome do mês e o ano: ">
+
+                <button type="submit">Adicionar</button>
+            </form>
+
+            <table>
+                <tr>
+                    <th><span style="color: rgb(0, 140, 255); font-weight: bold;">ID |</span></th>
+                    <th><span style="color: rgb(13, 255, 0); font-weight: bold;">Valor |</span></th>
+                    <th><span style="color: rgb(234, 255, 0); font-weight: bold;">Mês</span></th>
+                </tr>
+
+                {% for v in vendas %}
+                <tr>
+                    <td><span style="color: rgb(0, 140, 255); font-weight: bold;">{{ v.id }} |</span></td>
+                    <td> <span style="color: rgb(13, 255, 0); font-weight: bold;">{{ v.valor }} |</span></td>
+                    <td> <span style="color: rgb(234, 255, 0); font-weight: bold;">{{ v.data }}</span></td>
+                </tr>
+                {% endfor %}
+            </table>
+
+
+            <div class="container">
+                <h2>Gráfico de Vendas por Mês</h2>
+            <canvas id="grafico"></canvas>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+            <script>
+                const ctx = document.getElementById('grafico');
+
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: JSON.parse('{{ labels|escapejs }}'),
+                        datasets: [{
+                            label: 'Vendas',
+                            data: JSON.parse('{{ values|escapejs }}'),
+                            borderColor: 'blue',
+                            fill: false
+                        }]
+                    }
+                });
+            </script>
+            </div>
+        </div>
+
+
+    </div>
+
+
+</body>
+
+</html>
