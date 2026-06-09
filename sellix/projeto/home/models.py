@@ -48,4 +48,4 @@ class Venda(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
     valor = models.DecimalField(max_digits=10, decimal_places=2)
-    data = models.DateField(max_length=200)
+    data = models.CharField(max_length=200)

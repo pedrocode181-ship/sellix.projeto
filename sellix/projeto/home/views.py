@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+import yfinance as yf
+import pandas as pd
+import json
 
 from .models import Company, Funcionario, Membership, TableItem, Venda
 
@@ -104,6 +107,8 @@ def cadastro(request):
 @login_required
 def dashboard(request):
 
+    #notifications = Notification.objects.filter(is_active=True).order_by('-created_at')
+
     membership = Membership.objects.filter(user=request.user).first()
 
     if not membership:
@@ -118,11 +123,40 @@ def dashboard(request):
             company.name = new_name
             company.save()
 
+     # Dólar (USD/BRL)
+    usd = yf.Ticker("USDBRL=X")
+    usd_price = usd.history(period="1d")["Close"].iloc[-1]
+
+    # Euro (EUR/BRL)
+    eur = yf.Ticker("EURBRL=X")
+    eur_price = eur.history(period="1d")["Close"].iloc[-1]
+
+    context = {
+        "usd_price": round(usd_price, 2),
+        "eur_price": round(eur_price, 2),
+    }
+
+
+
+    vendas = Venda.objects.all()
+
+    labels = [v.data for v in vendas]
+    values = [float(v.valor) for v in vendas]
+
+    grafico = {
+        "vendas": vendas,
+        "labels": json.dumps(labels),
+        "values": json.dumps(values),
+    }
+
     return render(request, "core/dashboard.html", {
         "company": company,
         "items": TableItem.objects.filter(company=company),
         "funcionarios": Funcionario.objects.filter(company=company),
         "vendas": Venda.objects.filter(company=company),
+        **context,
+        **grafico
+        
     })
 
 # -----------------------
@@ -152,6 +186,12 @@ def add_item(request):
                 preco=preco,
             )
 
+    return redirect('dashboard')
+
+
+def deletar_item(request, id):
+    produto = get_object_or_404(TableItem, id=id)
+    produto.delete()
     return redirect('dashboard')
 
 
