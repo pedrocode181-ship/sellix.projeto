@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import add_funcionario, bloqueio, index, modulos, login_view, cadastro, controle, deletar_usuario, dashboard, politica, add_item, add_venda, deletar_item
+from .views import add_funcionario, bloqueio, deletar_funcionario, index, modulos, login_view, cadastro, controle, deletar_usuario, dashboard, politica, add_item, add_venda, deletar_item, relatorio_mensal, add_cliente, deletar_cliente
 
 
 urlpatterns = [
@@ -12,8 +12,12 @@ urlpatterns = [
     path('dashboard/', dashboard, name='dashboard'),
     path('dashboard/add_funcionario/', add_funcionario, name='add_funcionario'),
     path('dashboard/add_item/', add_item, name='add_item'),
-    path('produto/delete/<int:id>/', deletar_item, name='deletar_item'),
+    path('item/delete/<int:id>/', deletar_item, name='deletar_item'),
+    path('funcionario/delete/<int:id>/', deletar_funcionario, name='deletar_funcionario'),
     path('dashboard/politica/', politica, name='politica'),
     path('dashboard/add_venda/', add_venda, name='add_venda'),
+    path('dashboard/add_cliente/', add_cliente, name='add_cliente'),
+    path('dashboard/deletar_cliente/<int:id>/', deletar_cliente, name='deletar_cliente'),
     path('controle/deletar/<int:user_id>/', deletar_usuario, name='deletar_usuario'),
- ]
+    path("relatorio/<int:company_id>/", relatorio_mensal, name="relatorio_mensal"),
+]

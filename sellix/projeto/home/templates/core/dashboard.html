@@ -32,6 +32,7 @@
             padding: 15px;
             margin: 10px 0;
             border-radius: 10px;
+            border:1px solid #1f1f1f;
         }
 
         input {
@@ -89,6 +90,14 @@
                 <input type="text" name="name" value="{{ company.name }}">
                 <button type="submit">Atualizar</button>
             </form>
+        </div>
+
+        <div class="card">
+            <h2>Relatório Mensal (IA)</h2>
+
+            <a href="{% url 'relatorio_mensal' company.id %}">
+                <button>Gerar relatório</button>
+            </a>
         </div>
 
         <div class="card">
@@ -162,10 +171,59 @@
                     <td><span style="color: rgb(0, 140, 255); font-weight: bold;">{{ f.id }} |</span></td>
                     <td> <span style="color: rgb(13, 255, 0); font-weight: bold;">{{ f.nome }} |</span></td>
                     <td> <span style="color: rgb(234, 255, 0); font-weight: bold;">{{ f.cargo }}</span></td>
+
+                     <td>
+                        <form method="POST" action="{% url 'deletar_funcionario' f.id %}">
+                            {% csrf_token %}
+                            <button style="background:red; cursor: pointer; border-radius: 5px; color:white;" type="submit">
+                                Deletar
+                            </button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </table>
         </div>
+
+
+        <div class="card">
+            <h2>Tabela de clientes</h2>
+
+            <form method="POST" action="{% url 'add_cliente' %}">
+                {% csrf_token %}
+
+                <input type="text" name="nome" placeholder="Nome do cliente">
+                <input type="text" name="contato" placeholder="Contato do cliente">
+
+                <button type="submit">Adicionar</button>
+            </form>
+
+            <table>
+                <tr>
+                    <th><span style="color: rgb(0, 140, 255); font-weight: bold;">ID |</span></th>
+                    <th><span style="color: rgb(13, 255, 0); font-weight: bold;">Nome |</span></th>
+                    <th><span style="color: rgb(234, 255, 0); font-weight: bold;">Contato </span></th>
+                </tr>
+
+                {% for c in clientes %}
+                <tr>
+                    <td><span style="color: rgb(0, 140, 255); font-weight: bold;">{{ c.id }} |</span></td>
+                    <td><span style="color: rgb(13, 255, 0); font-weight: bold;">{{ c.nome }} |</span></td>
+                    <td><span style="color: rgb(234, 255, 0); font-weight: bold;">{{ c.contato }}</span></td>
+
+                    <td>
+                        <form method="POST" action="{% url 'deletar_cliente' c.id %}">
+                            {% csrf_token %}
+                            <button style="background:red; cursor: pointer; border-radius: 5px; color:white;" type="submit">
+                                Deletar
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
         <!-- Tabela de Vendas por Mês -->
         <div class="card">
             <h2>Tabela de Valores do Mês</h2>
@@ -174,7 +232,7 @@
                 {% csrf_token %}
 
                 <input type="text" name="valor" placeholder="Digite o valor do Mês: ">
-                <input type="text" name="mes" placeholder="Digite o nome do mês e o ano: ">
+                <input type="text" name="mes" placeholder="Digite a data: AAAA-MM-DD">
 
                 <button type="submit">Adicionar</button>
             </form>
@@ -220,7 +278,6 @@
             </script>
             </div>
         </div>
-
 
     </div>
 
