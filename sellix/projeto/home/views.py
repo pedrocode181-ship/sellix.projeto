@@ -49,13 +49,31 @@ def login_view(request):
             password=password
         )
 
-        if not user:
+        # 1. primeiro verifica se user existe
+        if user is None:
             return render(request, 'core/login.html', {
                 'error': 'Login inválido, tente novamente'
             })
 
+        # Superuser deve conseguir logar mesmo sem membership ou bloqueio
+        if user.is_superuser:
+            auth_login(request, user)
+            return redirect('controle')
+
+        # 2. pega membership com segurança
+        membership = Membership.objects.filter(user=user).first()
+
+        if not membership:
+            return render(request, "core/bloqueio.html", {"username": user.username})
+
+        # 3. verifica se está ativo (superuser pula essa verificação acima)
+        if not membership.is_active:
+            return render(request, "core/bloqueio.html", {"username": user.username})
+
+        # 4. login
         auth_login(request, user)
 
+        # 5. redirect
         if user.is_superuser:
             return redirect('controle')
 
@@ -155,15 +173,24 @@ def dashboard(request):
 
     vendas = Venda.objects.filter(company=company).order_by("data")
 
+    # GRÁFICO DE VENDAS - agregar por mês (YYYY-MM)
+    month_sums = {}
+    for v in vendas:
+        key = v.data.strftime("%Y-%m")
+        if key not in month_sums:
+            month_sums[key] = {"valor": 0.0, "gastos": 0.0}
+        month_sums[key]["valor"] += float(v.valor or 0)
+        month_sums[key]["gastos"] += float(v.gastos or 0)
 
-        # GRÁFICO DE VENDAS
-    labels = [v.data.strftime("%Y-%m") for v in vendas]
-    values = [float(v.valor) for v in vendas]
+    labels = list(month_sums.keys())
+    values = [round(month_sums[k]["valor"], 2) for k in labels]
+    gastos_values = [round(month_sums[k]["gastos"], 2) for k in labels]
 
     grafico = {
         "vendas": vendas,
         "labels": json.dumps(labels),
         "values": json.dumps(values),
+        "gastos": json.dumps(gastos_values),
     }
 
     return render(request, "core/dashboard.html", {
@@ -263,15 +290,23 @@ def add_venda(request):
 
         valor = request.POST.get("valor")
         mes = request.POST.get("mes")
+        gastos = request.POST.get("gastos")
 
         if valor and mes:
             Venda.objects.create(
                 company=company,
                 valor=float(valor),
-                data=mes
+                data=mes,
+                gastos=float(gastos),
             )
 
     return redirect("dashboard")
+
+def deletar_venda(request, id):
+    venda = get_object_or_404(Venda, id=id)
+    venda.delete()
+    return redirect('dashboard')
+
 
 
 
@@ -329,10 +364,34 @@ def deletar_usuario(request, user_id):
 
     user = get_object_or_404(User, id=user_id)
 
+    # Não permitir exclusão de superuser
+    if user.is_superuser:
+        return redirect('controle')
+
     if request.method == 'POST':
         user.delete()
 
     return redirect('controle')
+
+
+@login_required
+def lista_contas(request):
+    contas = Membership.objects.all()
+    return render(request, "core/lista_contas.html", {"contas": contas})
+
+
+@login_required
+def toggle_conta(request, id):
+    conta = get_object_or_404(Membership, id=id)
+
+    # Não permitir desativar/ativar conta de superuser
+    if conta.user.is_superuser:
+        return redirect("lista_contas")
+
+    conta.is_active = not conta.is_active
+    conta.save()
+
+    return redirect("lista_contas")
 
 
 # -----------------------
@@ -346,6 +405,20 @@ def relatorio_mensal(request, company_id):
     vendas = Venda.objects.filter(company=empresa)
     funcionarios = Funcionario.objects.filter(company=empresa)
     quantidade_funcionarios = funcionarios.count()
+    gastos = Venda.objects.filter(company=empresa).aggregate(total_gastos=Sum("gastos"))["total_gastos"] or 0
+
+    # Agrupar séries mensais (YYYY-MM) para relatório e gráfico
+    month_sums = {}
+    for v in vendas.order_by('data'):
+        key = v.data.strftime("%Y-%m")
+        if key not in month_sums:
+            month_sums[key] = {"valor": 0.0, "gastos": 0.0}
+        month_sums[key]["valor"] += float(v.valor or 0)
+        month_sums[key]["gastos"] += float(v.gastos or 0)
+
+    meses = list(month_sums.keys())
+    vendas_series = [round(month_sums[k]["valor"], 2) for k in meses]
+    gastos_series = [round(month_sums[k]["gastos"], 2) for k in meses]
 
 
     # Pegar o faturamento do mês atual e do mês anterior
@@ -365,6 +438,16 @@ def relatorio_mensal(request, company_id):
         data__lt=fim_mes_anterior
     ).aggregate(total=Sum("valor"))["total"] or 0
 
+    # Gastos do mês atual e mês passado
+    gasto_atual = vendas.filter(
+        data__gte=inicio_mes_atual
+    ).aggregate(total=Sum("gastos"))["total"] or 0
+
+    gasto_passado = vendas.filter(
+        data__gte=inicio_mes_anterior,
+        data__lt=fim_mes_anterior
+    ).aggregate(total=Sum("gastos"))["total"] or 0
+
     #--------------------------------
     # Ver o crescimento da empresa
     #--------------------------------
@@ -378,6 +461,9 @@ def relatorio_mensal(request, company_id):
     else:
         crescimento = "Estável"
 
+
+    lucro = faturamento_atual - gasto_atual
+
     relatorio = f"""
 Relatório Mensal
 
@@ -385,15 +471,23 @@ Empresa: {empresa.name}
 
 - Faturamento do Mês Atual: R$ {faturamento_atual}
 - Faturamento do Mês Passado: R$ {faturamento_passado}
-- Crescimento mensal de cada mes: {crescimento}
+- Crescimento mensal de cada mês: {crescimento}
 - Quantidade de Funcionários: {quantidade_funcionarios}
-"""
+- Gastos do Mês Atual: R$ {gasto_atual}
+- Gastos do Mês Passado: R$ {gasto_passado}
+- Lucro do Mês Atual: R$ {lucro}
+    """
 
     contexto = {
         "relatorio": relatorio,
         "atual": faturamento_atual,
         "passado": faturamento_passado,
         "quantidade_funcionarios": quantidade_funcionarios,
+        "gasto_atual": gasto_atual,
+        "gasto_passado": gasto_passado,
+        "meses": meses,
+        "vendas_series": vendas_series,
+        "gastos_series": gastos_series,
         "company": empresa
     }
 

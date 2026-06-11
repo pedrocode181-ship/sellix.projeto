@@ -32,7 +32,7 @@
             padding: 15px;
             margin: 10px 0;
             border-radius: 10px;
-            border:1px solid #1f1f1f;
+            border: 1px solid #1f1f1f;
         }
 
         input {
@@ -136,7 +136,8 @@
                     <td>
                         <form method="POST" action="{% url 'deletar_item' item.id %}">
                             {% csrf_token %}
-                            <button style="background:red; cursor: pointer; border-radius: 5px; color:white;" type="submit">
+                            <button style="background:red; cursor: pointer; border-radius: 5px; color:white;"
+                                type="submit">
                                 Deletar
                             </button>
                         </form>
@@ -172,10 +173,11 @@
                     <td> <span style="color: rgb(13, 255, 0); font-weight: bold;">{{ f.nome }} |</span></td>
                     <td> <span style="color: rgb(234, 255, 0); font-weight: bold;">{{ f.cargo }}</span></td>
 
-                     <td>
+                    <td>
                         <form method="POST" action="{% url 'deletar_funcionario' f.id %}">
                             {% csrf_token %}
-                            <button style="background:red; cursor: pointer; border-radius: 5px; color:white;" type="submit">
+                            <button style="background:red; cursor: pointer; border-radius: 5px; color:white;"
+                                type="submit">
                                 Deletar
                             </button>
                         </form>
@@ -214,7 +216,8 @@
                     <td>
                         <form method="POST" action="{% url 'deletar_cliente' c.id %}">
                             {% csrf_token %}
-                            <button style="background:red; cursor: pointer; border-radius: 5px; color:white;" type="submit">
+                            <button style="background:red; cursor: pointer; border-radius: 5px; color:white;"
+                                type="submit">
                                 Deletar
                             </button>
                         </form>
@@ -233,6 +236,7 @@
 
                 <input type="text" name="valor" placeholder="Digite o valor do Mês: ">
                 <input type="text" name="mes" placeholder="Digite a data: AAAA-MM-DD">
+                <input type="text" name="gastos" placeholder="Digite o valor de gastos do mês: ">
 
                 <button type="submit">Adicionar</button>
             </form>
@@ -250,32 +254,47 @@
                     <td> <span style="color: rgb(13, 255, 0); font-weight: bold;">{{ v.valor }} |</span></td>
                     <td> <span style="color: rgb(234, 255, 0); font-weight: bold;">{{ v.data }}</span></td>
                 </tr>
+
+                    <td>
+                        <form method="POST" action="{% url 'deletar_venda' v.id %}">
+                            {% csrf_token %}
+                            <button style="background:red; cursor: pointer; border-radius: 5px; color:white;" type="submit">
+                                Deletar
+                            </button>
+                        </form>
+                    </td>
                 {% endfor %}
             </table>
 
 
             <div class="container">
                 <h2>Gráfico de Vendas por Mês</h2>
-            <canvas id="grafico"></canvas>
+                <canvas id="grafico"></canvas>
 
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-            <script>
-                const ctx = document.getElementById('grafico');
+                <script>
+                    const ctx = document.getElementById('grafico');
 
-                new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: JSON.parse('{{ labels|escapejs }}'),
-                        datasets: [{
-                            label: 'Vendas',
-                            data: JSON.parse('{{ values|escapejs }}'),
-                            borderColor: 'blue',
-                            fill: false
-                        }]
-                    }
-                });
-            </script>
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: JSON.parse('{{ labels|escapejs }}'),
+                            datasets: [{
+                                label: 'Vendas',
+                                data: JSON.parse('{{ values|escapejs }}'),
+                                borderColor: 'blue',
+                                fill: false
+                            }, {
+                                label: 'Gastos',
+                                data: JSON.parse('{{ gastos|escapejs }}'),
+                                borderColor: 'red',
+                                fill: false,
+                                borderWidth: 2
+                            }]
+                        }
+                    });
+                </script>
             </div>
         </div>
 

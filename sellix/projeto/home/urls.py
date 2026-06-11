@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import add_funcionario, bloqueio, deletar_funcionario, index, modulos, login_view, cadastro, controle, deletar_usuario, dashboard, politica, add_item, add_venda, deletar_item, relatorio_mensal, add_cliente, deletar_cliente
+from .views import add_funcionario, bloqueio, deletar_funcionario, index, lista_contas, modulos, login_view, cadastro, controle, deletar_usuario, dashboard, politica, add_item, add_venda, deletar_item, relatorio_mensal, add_cliente, deletar_cliente, deletar_venda, toggle_conta
 
 
 urlpatterns = [
@@ -18,6 +18,10 @@ urlpatterns = [
     path('dashboard/add_venda/', add_venda, name='add_venda'),
     path('dashboard/add_cliente/', add_cliente, name='add_cliente'),
     path('dashboard/deletar_cliente/<int:id>/', deletar_cliente, name='deletar_cliente'),
+    path('dashboard/deletar_venda/<int:id>/', deletar_venda, name='deletar_venda'), 
+    path('controle/deletar/<int:user_id>/', deletar_usuario, name='deletar_usuario'),
     path('controle/deletar/<int:user_id>/', deletar_usuario, name='deletar_usuario'),
     path("relatorio/<int:company_id>/", relatorio_mensal, name="relatorio_mensal"),
+    path('contas/', lista_contas, name='lista_contas'),
+    path('contas/toggle/<int:id>/', toggle_conta, name='toggle_conta'),
 ]

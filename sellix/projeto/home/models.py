@@ -17,6 +17,8 @@ class Membership(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     is_admin = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)  # <- isso aqui
+    expires_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         unique_together = ('user', 'company')
@@ -48,6 +50,7 @@ class Venda(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
     valor = models.DecimalField(max_digits=10, decimal_places=2)
+    gastos = models.DecimalField(max_digits=10, decimal_places=2)
     data = models.DateField()
 
 
